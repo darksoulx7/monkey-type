@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-theme-primary text-theme-primary font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent text selection on UI elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-light-text-muted dark:bg-dark-text-muted rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-light-text-secondary dark:bg-dark-text-secondary;
+  }
+
+  /* Focus styles */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-bg dark:focus:ring-offset-dark-bg;
+  }
+}
+
+@layer components {
+  /* Button variants */
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus-ring;
+  }
+
+  .btn-primary {
+    @apply bg-light-accent dark:bg-dark-accent text-black hover:bg-opacity-90;
+  }
+
+  .btn-secondary {
+    @apply bg-light-bg-secondary dark:bg-dark-bg-secondary text-theme-primary border border-theme hover:bg-opacity-80;
+  }
+
+  .btn-ghost {
+    @apply text-theme-secondary hover:text-theme-primary hover:bg-light-bg-secondary dark:hover:bg-dark-bg-secondary;
+  }
+
+  /* Input styles */
+  .input {
+    @apply w-full px-3 py-2 bg-theme-secondary border border-theme rounded-lg text-theme-primary placeholder:text-theme-muted focus-ring;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-theme-secondary rounded-xl border border-theme p-6 shadow-soft;
+  }
+
+  /* Typography */
+  .heading-1 {
+    @apply text-4xl font-bold text-theme-primary;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-semibold text-theme-primary;
+  }
+
+  .heading-3 {
+    @apply text-2xl font-semibold text-theme-primary;
+  }
+
+  .heading-4 {
+    @apply text-xl font-medium text-theme-primary;
+  }
+
+  .body-large {
+    @apply text-lg text-theme-primary;
+  }
+
+  .body {
+    @apply text-base text-theme-primary;
+  }
+
+  .body-small {
+    @apply text-sm text-theme-secondary;
+  }
+
+  .caption {
+    @apply text-xs text-theme-muted;
+  }
+
+  /* Typing specific styles */
+  .typing-text {
+    @apply font-mono text-typing-md leading-relaxed;
+  }
+
+  .typing-word {
+    @apply inline-block;
+  }
+
+  .typing-char {
+    @apply relative;
+  }
+
+  .typing-char-correct {
+    @apply text-theme-secondary;
+  }
+
+  .typing-char-incorrect {
+    @apply bg-light-error dark:bg-dark-error text-white rounded-sm;
+  }
+
+  .typing-char-current {
+    @apply bg-light-accent dark:bg-dark-accent text-black animate-pulse;
+  }
+
+  .typing-char-untyped {
+    @apply text-theme-muted;
+  }
+
+  .typing-caret {
+    @apply absolute top-0 left-0 w-0.5 h-full bg-light-accent dark:bg-dark-accent animate-caret;
+  }
+
+  /* Statistics display */
+  .stat-card {
+    @apply card flex flex-col items-center justify-center min-h-24;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-light-accent dark:text-dark-accent;
+  }
+
+  .stat-label {
+    @apply text-sm text-theme-muted uppercase tracking-wide;
+  }
+
+  /* Animation utilities */
+  .animate-in {
+    @apply animate-fade-in;
+  }
+
+  .animate-out {
+    @apply animate-fade-out;
+  }
+
+  /* Loading states */
+  .loading {
+    @apply animate-pulse;
+  }
+
+  .skeleton {
+    @apply bg-light-text-muted dark:bg-dark-text-muted rounded animate-pulse;
+  }
+
+  /* Error states */
+  .error-text {
+    @apply text-light-error dark:text-dark-error;
+  }
+
+  .success-text {
+    @apply text-green-600 dark:text-green-400;
+  }
+
+  .warning-text {
+    @apply text-yellow-600 dark:text-yellow-400;
+  }
+}
+
+/* Custom animations */
+@keyframes typing-wave {
+  0%, 40%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-10px);
+  }
+}
+
+.typing-wave {
+  animation: typing-wave 1.5s ease-in-out infinite;
+}
+
+.typing-wave:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.typing-wave:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  .typing-text {
+    @apply text-typing-sm;
+  }
+  
+  .heading-1 {
+    @apply text-3xl;
+  }
+  
+  .heading-2 {
+    @apply text-2xl;
+  }
+}
