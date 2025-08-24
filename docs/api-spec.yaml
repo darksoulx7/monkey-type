@@ -1,0 +1,1568 @@
+openapi: 3.0.3
+info:
+  title: MonkeyType Clone API
+  description: |
+    Comprehensive REST API for a typing speed test website with user accounts, 
+    leaderboards, custom word lists, and statistics tracking.
+    
+    ## Features
+    - User authentication and profile management
+    - Typing test session management with real-time statistics
+    - Global and friends leaderboards
+    - Custom word lists and categories
+    - Statistics export (CSV/JSON)
+    - Performance optimized for low-latency typing tests
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: api-support@typingtest.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.typingtest.com/v1
+    description: Production server
+  - url: https://staging-api.typingtest.com/v1
+    description: Staging server
+  - url: http://localhost:3000/api/v1
+    description: Local development server
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+paths:
+  # Authentication Endpoints
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register new user account
+      description: Create a new user account with email and password
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+            example:
+              username: "speedtyper123"
+              email: "user@example.com"
+              password: "SecurePass123!"
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Username or email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User login
+      description: Authenticate user and return JWT token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+            example:
+              identifier: "speedtyper123"
+              password: "SecurePass123!"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      description: Get new access token using refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+              required: [refreshToken]
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: User logout
+      description: Invalidate user session and tokens
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+
+  # User Profile Endpoints
+  /users/profile:
+    get:
+      tags: [Users]
+      summary: Get current user profile
+      description: Retrieve authenticated user's profile information
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    put:
+      tags: [Users]
+      summary: Update user profile
+      description: Update user's profile information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileUpdate'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/{userId}:
+    get:
+      tags: [Users]
+      summary: Get public user profile
+      description: Retrieve public profile information for any user
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Public profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserProfile'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /users/friends:
+    get:
+      tags: [Users]
+      summary: Get user's friends list
+      description: Retrieve list of user's friends
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Friends list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendsList'
+
+    post:
+      tags: [Users]
+      summary: Send friend request
+      description: Send a friend request to another user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+              required: [userId]
+      responses:
+        '201':
+          description: Friend request sent successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Friend request already exists
+
+  # Typing Test Endpoints
+  /tests/start:
+    post:
+      tags: [Typing Tests]
+      summary: Start a new typing test
+      description: Initialize a new typing test session with specified parameters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestStartRequest'
+            example:
+              mode: "time"
+              duration: 60
+              wordListId: "common-words"
+              language: "english"
+      responses:
+        '201':
+          description: Test session created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestSession'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /tests/{testId}/submit:
+    post:
+      tags: [Typing Tests]
+      summary: Submit typing test results
+      description: Submit completed test results for processing and storage
+      parameters:
+        - $ref: '#/components/parameters/TestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestSubmission'
+      responses:
+        '200':
+          description: Test results submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /tests/{testId}/keystroke:
+    post:
+      tags: [Typing Tests]
+      summary: Record keystroke data
+      description: Record individual keystroke for real-time statistics (backup to WebSocket)
+      parameters:
+        - $ref: '#/components/parameters/TestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeystrokeData'
+      responses:
+        '200':
+          description: Keystroke recorded successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /tests/history:
+    get:
+      tags: [Typing Tests]
+      summary: Get user's test history
+      description: Retrieve paginated list of user's completed typing tests
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - name: mode
+          in: query
+          description: Filter by test mode
+          schema:
+            type: string
+            enum: [time, words]
+        - name: from
+          in: query
+          description: Start date filter (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          description: End date filter (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Test history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestHistory'
+
+  /tests/{testId}:
+    get:
+      tags: [Typing Tests]
+      summary: Get test details
+      description: Retrieve detailed information about a specific test
+      parameters:
+        - $ref: '#/components/parameters/TestId'
+      responses:
+        '200':
+          description: Test details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResult'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # Leaderboard Endpoints
+  /leaderboard/global:
+    get:
+      tags: [Leaderboards]
+      summary: Get global leaderboard
+      description: Retrieve global leaderboard rankings
+      security: []
+      parameters:
+        - name: mode
+          in: query
+          description: Test mode filter
+          schema:
+            type: string
+            enum: [time, words]
+            default: time
+        - name: duration
+          in: query
+          description: Test duration filter (for time mode)
+          schema:
+            type: integer
+            enum: [15, 30, 60, 120]
+        - name: wordCount
+          in: query
+          description: Word count filter (for words mode)
+          schema:
+            type: integer
+            enum: [10, 25, 50, 100]
+        - name: period
+          in: query
+          description: Time period for rankings
+          schema:
+            type: string
+            enum: [daily, weekly, monthly, allTime]
+            default: allTime
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Global leaderboard retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leaderboard'
+
+  /leaderboard/friends:
+    get:
+      tags: [Leaderboards]
+      summary: Get friends leaderboard
+      description: Retrieve leaderboard rankings among user's friends
+      parameters:
+        - name: mode
+          in: query
+          schema:
+            type: string
+            enum: [time, words]
+            default: time
+        - name: duration
+          in: query
+          schema:
+            type: integer
+            enum: [15, 30, 60, 120]
+        - name: wordCount
+          in: query
+          schema:
+            type: integer
+            enum: [10, 25, 50, 100]
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [daily, weekly, monthly, allTime]
+            default: allTime
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Friends leaderboard retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leaderboard'
+
+  # Word Lists Endpoints
+  /wordlists:
+    get:
+      tags: [Word Lists]
+      summary: Get available word lists
+      description: Retrieve all available word lists and categories
+      security: []
+      parameters:
+        - name: category
+          in: query
+          description: Filter by category
+          schema:
+            type: string
+            enum: [common, technical, coding, quotes, custom]
+        - name: language
+          in: query
+          description: Filter by language
+          schema:
+            type: string
+            default: english
+      responses:
+        '200':
+          description: Word lists retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordListCollection'
+
+    post:
+      tags: [Word Lists]
+      summary: Create custom word list
+      description: Create a new custom word list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordListCreate'
+      responses:
+        '201':
+          description: Word list created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /wordlists/{listId}:
+    get:
+      tags: [Word Lists]
+      summary: Get specific word list
+      description: Retrieve a specific word list by ID
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/ListId'
+      responses:
+        '200':
+          description: Word list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordList'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Word Lists]
+      summary: Update custom word list
+      description: Update an existing custom word list (only owner can update)
+      parameters:
+        - $ref: '#/components/parameters/ListId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordListUpdate'
+      responses:
+        '200':
+          description: Word list updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags: [Word Lists]
+      summary: Delete custom word list
+      description: Delete a custom word list (only owner can delete)
+      parameters:
+        - $ref: '#/components/parameters/ListId'
+      responses:
+        '204':
+          description: Word list deleted successfully
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # Statistics Endpoints
+  /stats/overview:
+    get:
+      tags: [Statistics]
+      summary: Get user statistics overview
+      description: Retrieve comprehensive overview of user's typing statistics
+      parameters:
+        - name: period
+          in: query
+          description: Time period for statistics
+          schema:
+            type: string
+            enum: [daily, weekly, monthly, allTime]
+            default: allTime
+      responses:
+        '200':
+          description: Statistics overview retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsOverview'
+
+  /stats/progress:
+    get:
+      tags: [Statistics]
+      summary: Get user progress over time
+      description: Retrieve user's typing progress data for charts and graphs
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [week, month, year]
+            default: month
+        - name: metric
+          in: query
+          schema:
+            type: string
+            enum: [wpm, accuracy, consistency]
+            default: wpm
+      responses:
+        '200':
+          description: Progress data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressData'
+
+  /stats/export:
+    post:
+      tags: [Statistics]
+      summary: Export user statistics
+      description: Generate and download user statistics in CSV or JSON format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+      responses:
+        '200':
+          description: Export file generated successfully
+          content:
+            application/csv:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  # Multiplayer Race Endpoints
+  /races:
+    get:
+      tags: [Multiplayer Races]
+      summary: Get available races
+      description: Retrieve list of available multiplayer races to join
+      parameters:
+        - name: status
+          in: query
+          description: Filter by race status
+          schema:
+            type: string
+            enum: [waiting, active, completed]
+            default: waiting
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Available races retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaceCollection'
+
+    post:
+      tags: [Multiplayer Races]
+      summary: Create new race
+      description: Create a new multiplayer race room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RaceCreate'
+      responses:
+        '201':
+          description: Race created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Race'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /races/{raceId}:
+    get:
+      tags: [Multiplayer Races]
+      summary: Get race details
+      description: Retrieve detailed information about a specific race
+      parameters:
+        - $ref: '#/components/parameters/RaceId'
+      responses:
+        '200':
+          description: Race details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Race'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /races/{raceId}/join:
+    post:
+      tags: [Multiplayer Races]
+      summary: Join a race
+      description: Join an existing multiplayer race
+      parameters:
+        - $ref: '#/components/parameters/RaceId'
+      responses:
+        '200':
+          description: Successfully joined race
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Race'
+        '400':
+          description: Cannot join race (full, started, etc.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /races/{raceId}/leave:
+    post:
+      tags: [Multiplayer Races]
+      summary: Leave a race
+      description: Leave a multiplayer race (only before it starts)
+      parameters:
+        - $ref: '#/components/parameters/RaceId'
+      responses:
+        '200':
+          description: Successfully left race
+        '400':
+          description: Cannot leave race (already started)
+
+# Component Definitions
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authenticated requests
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for service-to-service requests
+
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: User ID
+      schema:
+        type: string
+        format: uuid
+
+    TestId:
+      name: testId
+      in: path
+      required: true
+      description: Test session ID
+      schema:
+        type: string
+        format: uuid
+
+    ListId:
+      name: listId
+      in: path
+      required: true
+      description: Word list ID
+      schema:
+        type: string
+        format: uuid
+
+    RaceId:
+      name: raceId
+      in: path
+      required: true
+      description: Race ID
+      schema:
+        type: string
+        format: uuid
+
+    Limit:
+      name: limit
+      in: query
+      description: Number of items to return
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Unauthorized:
+      description: Unauthorized - authentication required or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    # Authentication Schemas
+    UserRegistration:
+      type: object
+      required: [username, email, password]
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 30
+          pattern: '^[a-zA-Z0-9_-]+$'
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]'
+
+    UserLogin:
+      type: object
+      required: [identifier, password]
+      properties:
+        identifier:
+          type: string
+          description: Username or email
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserProfile'
+        tokens:
+          $ref: '#/components/schemas/TokenResponse'
+
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresIn:
+          type: integer
+          description: Access token expiration time in seconds
+
+    # User Schemas
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        stats:
+          $ref: '#/components/schemas/UserStats'
+        preferences:
+          $ref: '#/components/schemas/UserPreferences'
+
+    PublicUserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        publicStats:
+          $ref: '#/components/schemas/PublicUserStats'
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 30
+        preferences:
+          $ref: '#/components/schemas/UserPreferences'
+
+    UserStats:
+      type: object
+      properties:
+        totalTests:
+          type: integer
+        averageWpm:
+          type: number
+          format: float
+        bestWpm:
+          type: number
+          format: float
+        averageAccuracy:
+          type: number
+          format: float
+        totalTimeTyped:
+          type: integer
+          description: Total time spent typing in seconds
+        consistency:
+          type: number
+          format: float
+          description: Consistency score (0-100)
+
+    PublicUserStats:
+      type: object
+      properties:
+        totalTests:
+          type: integer
+        bestWpm:
+          type: number
+          format: float
+        averageAccuracy:
+          type: number
+          format: float
+
+    UserPreferences:
+      type: object
+      properties:
+        theme:
+          type: string
+          enum: [light, dark]
+          default: dark
+        soundEnabled:
+          type: boolean
+          default: false
+        blindMode:
+          type: boolean
+          default: false
+        smoothCaret:
+          type: boolean
+          default: true
+        confidenceMode:
+          type: string
+          enum: [off, on, max]
+          default: off
+
+    FriendsList:
+      type: object
+      properties:
+        friends:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicUserProfile'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    # Test Schemas
+    TestStartRequest:
+      type: object
+      required: [mode]
+      properties:
+        mode:
+          type: string
+          enum: [time, words]
+        duration:
+          type: integer
+          enum: [15, 30, 60, 120]
+          description: Required when mode is 'time'
+        wordCount:
+          type: integer
+          enum: [10, 25, 50, 100]
+          description: Required when mode is 'words'
+        wordListId:
+          type: string
+          format: uuid
+          description: Optional custom word list ID
+        language:
+          type: string
+          default: english
+
+    TestSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        mode:
+          type: string
+          enum: [time, words]
+        duration:
+          type: integer
+        wordCount:
+          type: integer
+        words:
+          type: array
+          items:
+            type: string
+        startedAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+
+    KeystrokeData:
+      type: object
+      required: [timestamp, key, correct, position]
+      properties:
+        timestamp:
+          type: integer
+          description: Timestamp in milliseconds since test start
+        key:
+          type: string
+        correct:
+          type: boolean
+        position:
+          type: integer
+          description: Character position in text
+        wpm:
+          type: number
+          format: float
+        accuracy:
+          type: number
+          format: float
+
+    TestSubmission:
+      type: object
+      required: [completedText, keystrokes, duration]
+      properties:
+        completedText:
+          type: string
+          description: The text that was actually typed
+        keystrokes:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeystrokeData'
+        duration:
+          type: integer
+          description: Actual test duration in milliseconds
+        wpm:
+          type: number
+          format: float
+        accuracy:
+          type: number
+          format: float
+        consistency:
+          type: number
+          format: float
+        errors:
+          type: integer
+
+    TestResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        mode:
+          type: string
+          enum: [time, words]
+        duration:
+          type: integer
+        wordCount:
+          type: integer
+        wpm:
+          type: number
+          format: float
+        accuracy:
+          type: number
+          format: float
+        consistency:
+          type: number
+          format: float
+        errors:
+          type: integer
+        correctChars:
+          type: integer
+        incorrectChars:
+          type: integer
+        completedAt:
+          type: string
+          format: date-time
+        rank:
+          type: integer
+          description: Global rank for this test result
+
+    TestHistory:
+      type: object
+      properties:
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResult'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        summary:
+          type: object
+          properties:
+            totalTests:
+              type: integer
+            averageWpm:
+              type: number
+              format: float
+            bestWpm:
+              type: number
+              format: float
+            averageAccuracy:
+              type: number
+              format: float
+
+    # Leaderboard Schemas
+    Leaderboard:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeaderboardEntry'
+        currentUser:
+          $ref: '#/components/schemas/LeaderboardEntry'
+          description: Current user's position (if authenticated)
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        filters:
+          type: object
+          properties:
+            mode:
+              type: string
+            duration:
+              type: integer
+            wordCount:
+              type: integer
+            period:
+              type: string
+
+    LeaderboardEntry:
+      type: object
+      properties:
+        rank:
+          type: integer
+        user:
+          $ref: '#/components/schemas/PublicUserProfile'
+        wpm:
+          type: number
+          format: float
+        accuracy:
+          type: number
+          format: float
+        consistency:
+          type: number
+          format: float
+        testDate:
+          type: string
+          format: date-time
+
+    # Word List Schemas
+    WordListCollection:
+      type: object
+      properties:
+        wordLists:
+          type: array
+          items:
+            $ref: '#/components/schemas/WordListSummary'
+        categories:
+          type: array
+          items:
+            type: string
+
+    WordListSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        language:
+          type: string
+        wordCount:
+          type: integer
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        isCustom:
+          type: boolean
+        createdBy:
+          type: string
+          description: Username of creator (for custom lists)
+
+    WordList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        language:
+          type: string
+        words:
+          type: array
+          items:
+            type: string
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        isCustom:
+          type: boolean
+        createdBy:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    WordListCreate:
+      type: object
+      required: [name, words]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        words:
+          type: array
+          items:
+            type: string
+          minItems: 10
+          maxItems: 1000
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+          default: medium
+        isPublic:
+          type: boolean
+          default: false
+
+    WordListUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        words:
+          type: array
+          items:
+            type: string
+          minItems: 10
+          maxItems: 1000
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        isPublic:
+          type: boolean
+
+    # Statistics Schemas
+    StatisticsOverview:
+      type: object
+      properties:
+        summary:
+          $ref: '#/components/schemas/UserStats'
+        recentTests:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResult'
+          maxItems: 10
+        achievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Achievement'
+        streaks:
+          type: object
+          properties:
+            current:
+              type: integer
+            longest:
+              type: integer
+
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        unlockedAt:
+          type: string
+          format: date-time
+
+    ProgressData:
+      type: object
+      properties:
+        metric:
+          type: string
+        period:
+          type: string
+        dataPoints:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              value:
+                type: number
+                format: float
+              testCount:
+                type: integer
+
+    ExportRequest:
+      type: object
+      required: [format]
+      properties:
+        format:
+          type: string
+          enum: [csv, json]
+        period:
+          type: string
+          enum: [week, month, year, all]
+          default: all
+        includeKeystrokes:
+          type: boolean
+          default: false
+
+    ExportData:
+      type: object
+      properties:
+        downloadUrl:
+          type: string
+          format: uri
+        expiresAt:
+          type: string
+          format: date-time
+        fileSize:
+          type: integer
+
+    # Race Schemas
+    RaceCollection:
+      type: object
+      properties:
+        races:
+          type: array
+          items:
+            $ref: '#/components/schemas/RaceSummary'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    RaceSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+          enum: [waiting, active, completed]
+        maxPlayers:
+          type: integer
+        currentPlayers:
+          type: integer
+        mode:
+          type: string
+          enum: [time, words]
+        duration:
+          type: integer
+        wordCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    Race:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [waiting, active, completed]
+        maxPlayers:
+          type: integer
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/RacePlayer'
+        mode:
+          type: string
+          enum: [time, words]
+        duration:
+          type: integer
+        wordCount:
+          type: integer
+        words:
+          type: array
+          items:
+            type: string
+        createdBy:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+
+    RacePlayer:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/PublicUserProfile'
+        position:
+          type: integer
+          description: Current character position in text
+        wpm:
+          type: number
+          format: float
+        accuracy:
+          type: number
+          format: float
+        isFinished:
+          type: boolean
+        finishTime:
+          type: integer
+          description: Time to complete in milliseconds
+        rank:
+          type: integer
+          description: Final rank in race
+
+    RaceCreate:
+      type: object
+      required: [name, mode]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        mode:
+          type: string
+          enum: [time, words]
+        duration:
+          type: integer
+          enum: [15, 30, 60, 120]
+        wordCount:
+          type: integer
+          enum: [10, 25, 50, 100]
+        maxPlayers:
+          type: integer
+          minimum: 2
+          maximum: 10
+          default: 5
+        wordListId:
+          type: string
+          format: uuid
+        isPrivate:
+          type: boolean
+          default: false
+
+    # Common Schemas
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        hasMore:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+        details:
+          type: object
+        timestamp:
+          type: string
+          format: date-time
+
+    SuccessMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+# API Tags
+tags:
+  - name: Authentication
+    description: User authentication and session management
+  - name: Users
+    description: User profile management and social features
+  - name: Typing Tests
+    description: Typing test sessions and results
+  - name: Leaderboards
+    description: Global and friends leaderboard rankings
+  - name: Word Lists
+    description: Word list management and custom lists
+  - name: Statistics
+    description: User statistics and progress tracking
+  - name: Multiplayer Races
+    description: Real-time multiplayer typing races
