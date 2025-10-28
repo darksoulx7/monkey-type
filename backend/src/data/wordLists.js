@@ -67,28 +67,34 @@ const defaultWordLists = [
     difficulty: 'easy',
     isCustom: false,
     isPublic: true,
+    isSystem: true,
+    isActive: true,
     wordCount: commonWords.length
   },
   {
     name: 'Technical Terms',
     description: 'Technical vocabulary for programmers and IT professionals',
-    category: 'technical', 
+    category: 'technical',
     language: 'english',
     words: technicalWords,
     difficulty: 'medium',
     isCustom: false,
     isPublic: true,
+    isSystem: true,
+    isActive: true,
     wordCount: technicalWords.length
   },
   {
     name: 'Programming Keywords',
     description: 'Common programming language keywords and syntax',
     category: 'coding',
-    language: 'english', 
+    language: 'english',
     words: codingWords,
     difficulty: 'medium',
     isCustom: false,
     isPublic: true,
+    isSystem: true,
+    isActive: true,
     wordCount: codingWords.length
   },
   {
@@ -100,6 +106,8 @@ const defaultWordLists = [
     difficulty: 'hard',
     isCustom: false,
     isPublic: true,
+    isSystem: true,
+    isActive: true,
     wordCount: quotes.length
   }
 ];

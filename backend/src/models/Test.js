@@ -40,8 +40,9 @@ const testSessionSchema = new mongoose.Schema({
   userId: {
     type: String,
     ref: 'User',
-    required: true,
-    index: true
+    required: false, // Allow null for guest users
+    index: true,
+    default: null
   },
   mode: {
     type: String,
@@ -134,8 +135,9 @@ const testResultSchema = new mongoose.Schema({
   userId: {
     type: String,
     ref: 'User',
-    required: true,
-    index: true
+    required: false, // Allow null for guest users
+    index: true,
+    default: null
   },
   mode: {
     type: String,

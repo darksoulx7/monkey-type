@@ -38,7 +38,7 @@ const wordListSchema = new mongoose.Schema({
     required: true,
     trim: true,
     minlength: [1, 'Word cannot be empty'],
-    maxlength: [50, 'Word cannot exceed 50 characters']
+    maxlength: [200, 'Word/quote cannot exceed 200 characters']
   }],
   difficulty: {
     type: String,

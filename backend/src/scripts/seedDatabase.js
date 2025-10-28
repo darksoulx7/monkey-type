@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-const connectDB = require('../config/database');
+const { connectDB } = require('../config/database');
 const WordList = require('../models/WordList');
 const { defaultWordLists } = require('../data/wordLists');
 
@@ -37,5 +37,6 @@ async function seedDatabase() {
 if (require.main === module) {
   seedDatabase();
 }
-
+// mongodb+srv://rengoku:admin123@cluste
+// r0.fu2qi6k.mongodb.net/twitter?retryWrites=true&w=majority
 module.exports = seedDatabase;

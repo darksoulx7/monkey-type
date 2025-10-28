@@ -1,16 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200 dark:border-gray-700;
   }
   
   body {
-    @apply bg-theme-primary text-theme-primary font-sans;
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -33,16 +33,16 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-light-text-muted dark:bg-dark-text-muted rounded-full;
+    @apply bg-gray-400 dark:bg-gray-600 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-light-text-secondary dark:bg-dark-text-secondary;
+    @apply bg-gray-500 dark:bg-gray-500;
   }
 
   /* Focus styles */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-bg dark:focus:ring-offset-dark-bg;
+    @apply focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-gray-900;
   }
 }
 
@@ -53,58 +53,58 @@
   }
 
   .btn-primary {
-    @apply bg-light-accent dark:bg-dark-accent text-black hover:bg-opacity-90;
+    @apply bg-yellow-500 text-black hover:bg-yellow-400;
   }
 
   .btn-secondary {
-    @apply bg-light-bg-secondary dark:bg-dark-bg-secondary text-theme-primary border border-theme hover:bg-opacity-80;
+    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700;
   }
 
   .btn-ghost {
-    @apply text-theme-secondary hover:text-theme-primary hover:bg-light-bg-secondary dark:hover:bg-dark-bg-secondary;
+    @apply text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800;
   }
 
   /* Input styles */
   .input {
-    @apply w-full px-3 py-2 bg-theme-secondary border border-theme rounded-lg text-theme-primary placeholder:text-theme-muted focus-ring;
+    @apply w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder:text-gray-500 focus-ring;
   }
 
   /* Card styles */
   .card {
-    @apply bg-theme-secondary rounded-xl border border-theme p-6 shadow-soft;
+    @apply bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg;
   }
 
   /* Typography */
   .heading-1 {
-    @apply text-4xl font-bold text-theme-primary;
+    @apply text-4xl font-bold text-gray-900 dark:text-gray-100;
   }
 
   .heading-2 {
-    @apply text-3xl font-semibold text-theme-primary;
+    @apply text-3xl font-semibold text-gray-900 dark:text-gray-100;
   }
 
   .heading-3 {
-    @apply text-2xl font-semibold text-theme-primary;
+    @apply text-2xl font-semibold text-gray-900 dark:text-gray-100;
   }
 
   .heading-4 {
-    @apply text-xl font-medium text-theme-primary;
+    @apply text-xl font-medium text-gray-900 dark:text-gray-100;
   }
 
   .body-large {
-    @apply text-lg text-theme-primary;
+    @apply text-lg text-gray-900 dark:text-gray-100;
   }
 
   .body {
-    @apply text-base text-theme-primary;
+    @apply text-base text-gray-900 dark:text-gray-100;
   }
 
   .body-small {
-    @apply text-sm text-theme-secondary;
+    @apply text-sm text-gray-600 dark:text-gray-400;
   }
 
   .caption {
-    @apply text-xs text-theme-muted;
+    @apply text-xs text-gray-500 dark:text-gray-500;
   }
 
   /* Typing specific styles */
@@ -121,23 +121,23 @@
   }
 
   .typing-char-correct {
-    @apply text-theme-secondary;
+    @apply text-gray-600 dark:text-gray-400;
   }
 
   .typing-char-incorrect {
-    @apply bg-light-error dark:bg-dark-error text-white rounded-sm;
+    @apply bg-red-600 text-white rounded-sm;
   }
 
   .typing-char-current {
-    @apply bg-light-accent dark:bg-dark-accent text-black animate-pulse;
+    @apply bg-yellow-500 text-black animate-pulse;
   }
 
   .typing-char-untyped {
-    @apply text-theme-muted;
+    @apply text-gray-500 dark:text-gray-500;
   }
 
   .typing-caret {
-    @apply absolute top-0 left-0 w-0.5 h-full bg-light-accent dark:bg-dark-accent animate-caret;
+    @apply absolute top-0 left-0 w-0.5 h-full bg-yellow-500 animate-pulse;
   }
 
   /* Statistics display */
@@ -146,11 +146,11 @@
   }
 
   .stat-value {
-    @apply text-2xl font-bold text-light-accent dark:text-dark-accent;
+    @apply text-2xl font-bold text-yellow-500;
   }
 
   .stat-label {
-    @apply text-sm text-theme-muted uppercase tracking-wide;
+    @apply text-sm text-gray-500 uppercase tracking-wide;
   }
 
   /* Animation utilities */
@@ -168,12 +168,12 @@
   }
 
   .skeleton {
-    @apply bg-light-text-muted dark:bg-dark-text-muted rounded animate-pulse;
+    @apply bg-gray-300 dark:bg-gray-700 rounded animate-pulse;
   }
 
   /* Error states */
   .error-text {
-    @apply text-light-error dark:text-dark-error;
+    @apply text-red-600 dark:text-red-400;
   }
 
   .success-text {

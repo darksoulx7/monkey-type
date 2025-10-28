@@ -27,6 +27,7 @@ const TypingArea = () => {
     isLoading
   } = useTypingStore()
 
+
   // Focus management
   useEffect(() => {
     const focusInput = () => {
@@ -67,8 +68,12 @@ const TypingArea = () => {
 
   // WebSocket integration
   useEffect(() => {
-    if (testId && websocketManager.isConnected()) {
-      websocketManager.joinTest(testId)
+    try {
+      if (testId && websocketManager && typeof websocketManager.isConnected === 'function' && websocketManager.isConnected()) {
+        websocketManager.joinTest(testId)
+      }
+    } catch (error) {
+      console.warn('WebSocket not available:', error)
     }
   }, [testId])
 
@@ -112,13 +117,17 @@ const TypingArea = () => {
       processKeystroke(event.key, timestamp)
 
       // Send to WebSocket for real-time updates
-      if (testId && websocketManager.isConnected()) {
-        websocketManager.sendKeystroke(testId, {
-          key: event.key,
-          timestamp,
-          correct: true, // This would be calculated
-          position: useTypingStore.getState().typedText.length
-        })
+      try {
+        if (testId && websocketManager && typeof websocketManager.isConnected === 'function' && websocketManager.isConnected()) {
+          websocketManager.sendKeystroke(testId, {
+            key: event.key,
+            timestamp,
+            correct: true, // This would be calculated
+            position: useTypingStore.getState().typedText.length
+          })
+        }
+      } catch (error) {
+        console.warn('WebSocket keystroke failed:', error)
       }
     }
   }, [isTestActive, isTestCompleted, processKeystroke, testId, handleRestart, resetTest])
@@ -204,43 +213,27 @@ const TypingArea = () => {
 
       {/* Main Typing Interface */}
       <Card className="relative">
-        <AnimatePresence mode="wait">
-          {!words || words.length === 0 ? (
-            <motion.div
-              key="setup"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center py-16"
+        {(!words || words.length === 0) ? (
+          <div className="text-center py-16">
+            <h2 className="heading-2 mb-4">Ready to start typing?</h2>
+            <p className="body text-theme-secondary mb-8">
+              Press the button below or use Tab/Enter to begin your test
+            </p>
+            <Button
+              onClick={handleStartTest}
+              loading={isLoading}
+              size="lg"
+              className="mb-4"
             >
-              <h2 className="heading-2 mb-4">Ready to start typing?</h2>
-              <p className="body text-theme-secondary mb-8">
-                Press the button below or use Tab/Enter to begin your test
-              </p>
-              <Button
-                onClick={handleStartTest}
-                loading={isLoading}
-                size="lg"
-                className="mb-4"
-              >
-                Start Test
-              </Button>
-              {error && (
-                <p className="error-text text-sm">{error}</p>
-              )}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="typing"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <WordDisplay />
-            </motion.div>
-          )}
-        </AnimatePresence>
+              Start Test
+            </Button>
+            {error && (
+              <p className="error-text text-sm">{error}</p>
+            )}
+          </div>
+        ) : (
+          <WordDisplay />
+        )}
 
         {/* Input status indicator */}
         {!isCapturingInput && isTestActive && !isTestCompleted && (

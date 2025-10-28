@@ -15,13 +15,12 @@ const logger = require('../config/logger');
 
 const router = express.Router();
 
-// All test routes require authentication except test details view
-router.use(protect);
+// Test routes allow optional authentication for guest users
 
 // @route   POST /api/v1/tests/start
 // @desc    Start a new typing test session
-// @access  Private
-router.post('/start', validateTestStart, asyncHandler(async (req, res, next) => {
+// @access  Public (with optional auth for logged users)
+router.post('/start', optionalAuth, validateTestStart, asyncHandler(async (req, res, next) => {
   const { mode, duration, wordCount, wordListId, language = 'english' } = req.body;
   
   let words = [];
@@ -29,14 +28,19 @@ router.post('/start', validateTestStart, asyncHandler(async (req, res, next) => 
   
   // Get words from word list or use default
   if (wordListId) {
+    const accessConditions = [
+      { isPublic: true },
+      { isSystem: true }
+    ];
+
+    // Add user-specific condition if user is authenticated
+    if (req.user) {
+      accessConditions.push({ createdBy: req.user._id });
+    }
+
     selectedWordList = await WordList.findOne({
       _id: wordListId,
-      isActive: true,
-      $or: [
-        { isPublic: true },
-        { isSystem: true },
-        { createdBy: req.user._id }
-      ]
+      $or: accessConditions
     });
     
     if (!selectedWordList) {
@@ -81,7 +85,7 @@ router.post('/start', validateTestStart, asyncHandler(async (req, res, next) => 
   
   // Create test session
   const testSession = await TestSession.create({
-    userId: req.user._id,
+    userId: req.user?._id || null, // Allow null for guest users
     mode,
     duration: mode === 'time' ? duration : undefined,
     wordCount: mode === 'words' ? wordCount : undefined,
@@ -89,8 +93,8 @@ router.post('/start', validateTestStart, asyncHandler(async (req, res, next) => 
     language,
     words
   });
-  
-  logger.info(`🧪 Test session started: ${testSession._id} by ${req.user.username} (${mode})`);
+
+  logger.info(`🧪 Test session started: ${testSession._id} by ${req.user?.username || 'guest'} (${mode})`);
   
   res.status(201).json({
     status: 'success',

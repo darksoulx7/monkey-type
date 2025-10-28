@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { useAuthStore } from './store/authStore'
-import { useThemeStore } from './store/themeStore'
+import useAuthStore from './store/authStore'
+import useThemeStore from './store/themeStore'
 
 // Pages
 import Home from './pages/Home'

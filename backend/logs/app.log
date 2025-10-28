@@ -1,0 +1,209 @@
+2025-09-03 01:51:19 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-02.fu2qi6k.mongodb.net
+2025-09-03 01:51:19 [INFO]: 📊 Database: monkey-type
+2025-09-03 01:51:22 [WARN]: 🔌 MongoDB disconnected
+2025-09-03 01:52:18 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-01.fu2qi6k.mongodb.net
+2025-09-03 01:52:18 [INFO]: 📊 Database: monkey-type
+2025-09-03 01:52:21 [WARN]: 🔌 MongoDB disconnected
+2025-09-03 01:52:38 [INFO]: 🚀 Server running on http://localhost:3001
+2025-09-03 01:52:38 [INFO]: 🔌 WebSocket server ready for connections
+2025-09-03 01:52:38 [INFO]: 📊 Environment: development
+2025-09-03 01:52:38 [INFO]: 🛡️  Security features: {"helmet":true,"cors":true,"rateLimit":true,"compression":true}
+2025-09-03 01:52:41 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-00.fu2qi6k.mongodb.net
+2025-09-03 01:52:41 [INFO]: 📊 Database: monkey-type
+2025-09-03 01:53:38 [ERROR]: Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:962:11)
+    at Socket._write (node:net:974:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/harshank/repos/monkey-type/backend/node_modules/winston/lib/winston/transports/console.js:87:23)
+    at Console._write (/home/harshank/repos/monkey-type/backend/node_modules/winston-transport/modern.js:82:19)
+    at doWrite (/home/harshank/repos/monkey-type/backend/node_modules/winston-transport/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+2025-09-03 01:57:09 [INFO]: 🚀 Server running on http://localhost:3001
+2025-09-03 01:57:09 [INFO]: 🔌 WebSocket server ready for connections
+2025-09-03 01:57:09 [INFO]: 📊 Environment: development
+2025-09-03 01:57:09 [INFO]: 🛡️  Security features: {"helmet":true,"cors":true,"rateLimit":true,"compression":true}
+2025-09-03 01:57:13 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-00.fu2qi6k.mongodb.net
+2025-09-03 01:57:13 [INFO]: 📊 Database: monkey-type
+2025-09-03 01:58:15 [WARN]: 🔌 MongoDB disconnected
+2025-09-14 19:21:40 [INFO]: 🚀 Server running on http://localhost:3001
+2025-09-14 19:21:40 [INFO]: 🔌 WebSocket server ready for connections
+2025-09-14 19:21:40 [INFO]: 📊 Environment: development
+2025-09-14 19:21:40 [INFO]: 🛡️  Security features: {"helmet":true,"cors":true,"rateLimit":true,"compression":true}
+2025-09-14 19:21:44 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-02.fu2qi6k.mongodb.net
+2025-09-14 19:21:44 [INFO]: 📊 Database: monkey-type
+2025-09-14 19:33:21 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:03:21 +0000] "GET /health HTTP/1.1" 200 412 "-" "curl/8.12.1"
+2025-09-14 19:33:33 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:03:33 +0000] "GET /api/v1/wordlists HTTP/1.1" 200 974 "-" "curl/8.12.1"
+2025-09-14 19:33:44 [WARN]: 🚨 Security [auth_required]:
+2025-09-14 19:33:44 [ERROR]: Error: You are not logged in! Please log in to get access.
+    at /home/harshank/repos/monkey-type/backend/src/middleware/auth.js:71:17
+    at /home/harshank/repos/monkey-type/backend/src/middleware/error.js:130:21
+    at Layer.handle [as handle_request] (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/index.js:328:13)
+    at /home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/index.js:280:10)
+    at Function.handle (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/index.js:175:3)
+    at router (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/index.js:47:12)
+    at Layer.handle [as handle_request] (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/layer.js:95:5)
+2025-09-14 19:33:44 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:03:44 +0000] "POST /api/v1/tests/start HTTP/1.1" 401 1338 "-" "curl/8.12.1"
+2025-09-14 19:33:56 [ERROR]: SyntaxError: Unexpected token ! in JSON at position 83
+    at JSON.parse (<anonymous>)
+    at parse (/home/harshank/repos/monkey-type/backend/node_modules/body-parser/lib/types/json.js:92:19)
+    at /home/harshank/repos/monkey-type/backend/node_modules/body-parser/lib/read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:203:9)
+    at invokeCallback (/home/harshank/repos/monkey-type/backend/node_modules/raw-body/index.js:238:16)
+    at done (/home/harshank/repos/monkey-type/backend/node_modules/raw-body/index.js:227:7)
+    at IncomingMessage.onEnd (/home/harshank/repos/monkey-type/backend/node_modules/raw-body/index.js:287:7)
+    at IncomingMessage.emit (node:events:517:28)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+2025-09-14 19:33:56 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:03:56 +0000] "POST /api/v1/auth/register HTTP/1.1" 400 1028 "-" "curl/8.12.1"
+2025-09-14 19:34:05 [ERROR]: Error: Validation failed
+    at handleValidationErrors (/home/harshank/repos/monkey-type/backend/src/middleware/validation.js:10:17)
+    at Layer.handle [as handle_request] (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/route.js:149:13)
+    at middleware (/home/harshank/repos/monkey-type/backend/node_modules/express-validator/lib/middlewares/check.js:16:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-14 19:34:05 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:04:05 +0000] "POST /api/v1/auth/register HTTP/1.1" 400 754 "-" "curl/8.12.1"
+2025-09-14 19:42:46 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-00.fu2qi6k.mongodb.net
+2025-09-14 19:42:46 [INFO]: 📊 Database: monkey-type
+2025-09-14 19:42:49 [WARN]: 🔌 MongoDB disconnected
+2025-09-14 19:45:12 [INFO]: 🚀 Server running on http://localhost:3001
+2025-09-14 19:45:12 [INFO]: 🔌 WebSocket server ready for connections
+2025-09-14 19:45:12 [INFO]: 📊 Environment: development
+2025-09-14 19:45:12 [INFO]: 🛡️  Security features: {"helmet":true,"cors":true,"rateLimit":true,"compression":true}
+2025-09-14 19:45:16 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-02.fu2qi6k.mongodb.net
+2025-09-14 19:45:16 [INFO]: 📊 Database: monkey-type
+2025-09-14 19:47:31 [ERROR]: Error: Validation failed
+    at handleValidationErrors (/home/harshank/repos/monkey-type/backend/src/middleware/validation.js:10:17)
+    at Layer.handle [as handle_request] (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/route.js:149:13)
+    at middleware (/home/harshank/repos/monkey-type/backend/node_modules/express-validator/lib/middlewares/check.js:16:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-14 19:47:31 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:17:31 +0000] "POST /api/v1/tests/start HTTP/1.1" 400 752 "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 19:49:08 [INFO]: 🧪 Test session started: 28c45dbc-9a63-4d60-a005-df3576437180 by guest (time)
+2025-09-14 19:49:08 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:19:08 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 19:50:00 [INFO]: 🔐 Auth [user_registered] User: 28067c6a-7800-4b4a-87b0-8f07fe731652 IP: 127.0.0.1 UA: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+2025-09-14 19:50:00 [INFO]: 👤 New user registered: testuser123 (testuser@example.com)
+2025-09-14 19:50:00 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:20:00 +0000] "POST /api/v1/auth/register HTTP/1.1" 201 - "http://localhost:3002/register" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 19:59:15 [INFO]: 🧪 Test session started: 88771f27-b699-46f9-8b3a-4cc78a350524 by guest (time)
+2025-09-14 19:59:15 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:29:15 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 19:59:18 [INFO]: 🧪 Test session started: f58f660f-8470-44d3-bf3d-ac25d7dc549e by guest (time)
+2025-09-14 19:59:18 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:29:18 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 19:59:29 [INFO]: 🧪 Test session started: 2643e832-216f-4521-af0e-6a784d908399 by guest (time)
+2025-09-14 19:59:29 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:29:29 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:00:48 [WARN]: 🔌 MongoDB disconnected
+2025-09-14 20:00:59 [INFO]: 🔄 MongoDB reconnected
+2025-09-14 20:01:49 [INFO]: 🚀 Server running on http://localhost:3001
+2025-09-14 20:01:49 [INFO]: 🔌 WebSocket server ready for connections
+2025-09-14 20:01:49 [INFO]: 📊 Environment: development
+2025-09-14 20:01:49 [INFO]: 🛡️  Security features: {"helmet":true,"cors":true,"rateLimit":true,"compression":true}
+2025-09-14 20:01:53 [INFO]: 🍃 MongoDB Connected: ac-v5ahorf-shard-00-01.fu2qi6k.mongodb.net
+2025-09-14 20:01:53 [INFO]: 📊 Database: monkey-type
+2025-09-14 20:02:19 [INFO]: 🧪 Test session started: eb6a2848-52f7-4db5-8b63-0b358cb819a8 by guest (time)
+2025-09-14 20:02:19 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:32:19 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:06:21 [INFO]: 🧪 Test session started: 9a9ea850-b73d-4cb0-868e-56106c9b349c by guest (time)
+2025-09-14 20:06:21 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:36:21 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:07:50 [INFO]: 🧪 Test session started: 56c09e68-2080-41a6-be9e-ec42a3b4f407 by guest (time)
+2025-09-14 20:07:50 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:37:50 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:09:26 [INFO]: 🧪 Test session started: 6c0c6982-881a-49f1-8da6-479881bfe4d5 by guest (time)
+2025-09-14 20:09:26 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:39:26 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:11:03 [INFO]: 🧪 Test session started: e2f0a147-1d1f-41f9-b83a-aa586cc26b9f by guest (time)
+2025-09-14 20:11:03 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:41:03 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:13:17 [INFO]: 🧪 Test session started: 190af3b3-e9c3-4ee6-b4ec-380a126835ed by guest (time)
+2025-09-14 20:13:17 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:43:17 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:14:14 [INFO]: 🧪 Test session started: d80fc928-59fc-40c1-9236-839b28e0638f by guest (time)
+2025-09-14 20:14:14 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:44:14 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:15:10 [INFO]: 🧪 Test session started: 8c4c5d58-e36b-4bcb-9612-c83a3500616e by guest (time)
+2025-09-14 20:15:10 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:45:10 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-14 20:18:56 [ERROR]: TypeError: Cannot read properties of undefined (reading '_id')
+    at /home/harshank/repos/monkey-type/backend/src/routes/tests.js:130:39
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-14 20:18:56 [INFO]: 127.0.0.1 - - [14/Sep/2025:14:48:56 +0000] "POST /api/v1/tests/8c4c5d58-e36b-4bcb-9612-c83a3500616e/submit HTTP/1.1" 500 446 "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-15 11:01:23 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 11:01:35 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 11:02:32 [INFO]: 🧪 Test session started: 4240a1f4-bf2c-4259-8937-69e32c757e3b by guest (time)
+2025-09-15 11:02:32 [INFO]: 127.0.0.1 - - [15/Sep/2025:05:32:32 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 - "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-15 11:03:20 [INFO]: 🧪 Test session started: ef410bce-654f-440c-99fa-db63d0cccadc by guest (time)
+2025-09-15 11:03:20 [INFO]: 127.0.0.1 - - [15/Sep/2025:05:33:20 +0000] "POST /api/v1/tests/start HTTP/1.1" 201 851 "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-15 11:03:36 [ERROR]: Error: Validation failed
+    at handleValidationErrors (/home/harshank/repos/monkey-type/backend/src/middleware/validation.js:10:17)
+    at Layer.handle [as handle_request] (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/harshank/repos/monkey-type/backend/node_modules/express/lib/router/route.js:149:13)
+    at middleware (/home/harshank/repos/monkey-type/backend/node_modules/express-validator/lib/middlewares/check.js:16:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-15 11:03:36 [INFO]: 127.0.0.1 - - [15/Sep/2025:05:33:36 +0000] "POST /api/v1/tests/ef410bce-654f-440c-99fa-db63d0cccadc/submit HTTP/1.1" 400 790 "http://localhost:3002/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-09-15 11:05:48 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 11:06:00 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 11:17:48 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 11:17:59 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 11:18:03 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 11:18:14 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 11:28:03 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 11:28:14 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 11:38:43 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 11:38:55 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 11:48:02 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 11:48:15 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 12:59:58 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 13:00:10 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 13:02:53 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 13:03:05 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 13:08:03 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 13:08:14 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 14:08:43 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 14:08:55 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 14:23:48 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 14:24:00 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 14:59:09 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 14:59:21 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 15:09:58 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 15:10:10 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 15:42:09 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 15:42:21 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 16:39:53 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 16:40:06 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 17:52:59 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 17:53:10 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 18:02:09 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 18:02:21 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 18:12:04 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 18:12:15 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 18:12:19 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 18:12:30 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 18:24:04 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 18:24:15 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 18:37:44 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 18:37:56 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 18:38:49 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 18:39:00 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 18:52:48 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 18:53:00 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 19:17:54 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 19:18:05 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 19:23:14 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 19:23:25 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 19:32:09 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 19:32:20 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 19:51:13 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 19:51:25 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 19:55:04 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 19:55:15 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 20:09:04 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 20:09:15 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 20:09:20 [WARN]: 🔌 MongoDB disconnected
+2025-09-15 20:09:31 [INFO]: 🔄 MongoDB reconnected
+2025-09-15 20:10:47 [ERROR]: Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:962:11)
+    at Socket._write (node:net:974:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/harshank/repos/monkey-type/backend/node_modules/winston/lib/winston/transports/console.js:87:23)
+    at Console._write (/home/harshank/repos/monkey-type/backend/node_modules/winston-transport/modern.js:82:19)
+    at doWrite (/home/harshank/repos/monkey-type/backend/node_modules/winston-transport/node_modules/readable-stream/lib/_stream_writable.js:390:139)

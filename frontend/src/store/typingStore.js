@@ -70,7 +70,7 @@ const useTypingStore = create(
             mode,
             ...(mode === 'time' ? { duration } : { wordCount }),
             language,
-            wordListId,
+            ...(wordListId && { wordListId }),
           }),
         })
 
@@ -80,10 +80,15 @@ const useTypingStore = create(
         }
 
         const testData = await response.json()
-        
+        const testSession = testData.data.testSession
+
+        console.log('API Response:', testData)
+        console.log('Test Session:', testSession)
+        console.log('Words:', testSession.words)
+
         set({
-          testId: testData.id,
-          words: testData.words,
+          testId: testSession.id,
+          words: testSession.words,
           currentWordIndex: 0,
           currentCharIndex: 0,
           typedText: '',

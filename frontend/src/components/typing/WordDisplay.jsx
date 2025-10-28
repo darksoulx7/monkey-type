@@ -12,6 +12,7 @@ const WordDisplay = memo(() => {
     isTestActive
   } = useTypingStore()
 
+
   const processedWords = useMemo(() => {
     if (!words || words.length === 0) return []
 
